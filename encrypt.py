@@ -55,7 +55,7 @@ class ReverseCipher2:
     
         
     def __str__(self):
-        return self.cipher_text
+        return self.reverse_lst(self.cipher_text)
 
 if __name__ == "__main__":
     c = ReverseCipher2("Hello, World!")
