@@ -2,20 +2,20 @@ import unittest
 
 class Salting:
     def __init__(self, text: str, salt: str):
-        self.salt = salt
-        self.cipher_text = self.salter(text)
+        self.salt = salt #storing salt
+        self.cipher_text = self.salter(text) #setting cipher text to the salter function rather than storing it
 
     def salter(self, text: str):
-        return text + self.salt
+        return text + self.salt #returns text with salt added
     
     def __str__(self):
-        return self.cipher_text[:len(self.cipher_text) - len(self.salt)]
+        return self.cipher_text[:len(self.cipher_text) - len(self.salt)] #returns ciphertext decrypted by indexing
 
 
 
 class ReverseCipher1:
     def __init__(self, text: str):
-        self.cipher_text = self.reverse_text(text)
+        self.cipher_text = self.reverse_text(text) #stores function rather than 
         self.reverse_text(text)
 
     def reverse_text(self, text: str):
@@ -31,25 +31,31 @@ class ReverseCipher1:
 
 
 
-
 class ReverseCipher2:
     def __init__(self, text: str):
         if not isinstance(text, str):
             raise TypeError
-        self.cipher_text = self.reverse_text(text)
+        self.cipher_text = self.reverse_lst(text)
+    
+    def reverse_lst(self, text: str):
+        words = text.split() #splits text
+        reversed_words = [] #initalizing list
+        
+        for word in words:
+            reversed_word = self.reverse_word(word) #uses my own reverse function
+            reversed_words.append(reversed_word) # appends the word into lst
+        
+        return ' '.join(reversed_words) #join lst together
 
+    def reverse_word(self, text: str):
+        reversed_word = ''
+        for i in text: #loops through the text
+            reversed_word = i + reversed_word  #adds char to the string through indexing whilst going through the loop when the words are backwards
+        return reversed_word #returns function
     
-    def reverse_text(self, text: str):
-        text_lst = text.split()#creates a list of the string
-        reverse_text = [] #creating list to store cipher
-        num = 0
-        for i in range(len(text_lst)-1, -1, -1): #goes through string list backwards
-            reverse_text.append(text_lst[i]) #appeneds each indivdual character inside of the list thats storing cipher
-        word = "".join(reverse_text) #joins each letter together
-        return word
-    
+        
     def __str__(self):
-        return self.reverse_text(self.cipher_text)
+        return self.cipher_text
 
 if __name__ == "__main__":
     c = ReverseCipher2("Hello, World!")
