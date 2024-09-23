@@ -13,6 +13,7 @@ class Salting:
 
 
 
+
 class ReverseCipher1:
     def __init__(self, text: str):
         self.cipher_text = self.reverse_text(text) #stores function rather than 
@@ -28,6 +29,7 @@ class ReverseCipher1:
 
     def __str__(self):
         return self.reverse_text(self.cipher_text)
+
 
 
 
@@ -57,9 +59,7 @@ class ReverseCipher2:
     def __str__(self):
         return self.reverse_lst(self.cipher_text)
 
-if __name__ == "__main__":
-    c = ReverseCipher2("Hello, World!")
-    print(c)
+
 
         
     
@@ -91,7 +91,9 @@ class XORCipher:
         
     def __str__(self):
         return self.convert(self.cipher_text, self.key)
-    
+
+
+
 
 class CaesarCipher:
     def __init__(self, text: str, key: int):
@@ -121,36 +123,74 @@ class CaesarCipher:
 class VigenereCipher:
     def __init__(self, text: str, key: str):
         self.key = key
-        self.cipher_text = self.encrypt(text)
+        self.cipher_text = self.encrypt(text)  # Encrypt the text and store the result
 
     def new_key(self, text: str):
         new_key1 = (self.key * (len(text) // len(self.key))) + self.key[:len(text) % len(self.key)]
+        #multplys the key by how many times we should repeat the key for the len of text then addition part
+        #accounts for the remainder of the text if there is any
         return new_key1
 
     def encrypt(self, text: str):
         result = []
-        key1 = self.new_key(text)
+        key1 = self.new_key(text)  # Get the key matching the length of the text
 
         for i in range(len(text)):
             temp = key1[i]
             temp1 = text[i]
 
-            if temp.isupper():
-                shift = ord(temp1.upper()) - 65  #shifts the charcters
-                char = chr((ord(temp) - 65 + shift) % 26 + 65)
+            if temp1.isupper():
+                if temp.isdigit():
+                    shift = int(temp)  # Handle numeric key directly as shift
+                else:
+                    shift = ord(temp.upper()) - 65  # Shift for uppercase letters
+                char = chr((ord(temp1) - 65 + shift) % 26 + 65)
                 result.append(char)
+
             elif temp1.islower():
-                shift = ord(temp.lower()) - 97  #shifts the characters
-                char = chr((ord(temp) - 97 + shift) % 26 + 97)
+                if temp.isdigit():
+                    shift = int(temp)  # Handle numeric key directly as shift
+                else:
+                    shift = ord(temp.lower()) - 97  # Shift for lowercase letters
+                char = chr((ord(temp1) - 97 + shift) % 26 + 97)
                 result.append(char)
+
             else:
-                result.append(temp1)  # excpetion for special chars
+                result.append(temp1)
+
+        return ''.join(result)
+    
+    def dencrypt(self, cipher_text: str):
+        result = []
+        key1 = self.new_key(cipher_text)  # Get the key matching the length of the text
+
+        for i in range(len(cipher_text)):
+            temp = key1[i]
+            temp1 = cipher_text[i]
+
+            if temp1.isupper():
+                if temp.isdigit():
+                    shift = int(temp)  # Handle numeric key directly as shift
+                else:
+                    shift = ord(temp.upper()) - 65  # Shift for uppercase letters
+                char = chr((ord(temp1) - 65 - shift) % 26 + 65)
+                result.append(char)
+
+            elif temp1.islower():
+                if temp.isdigit():
+                    shift = int(temp)  # Handle numeric key directly as shift
+                else:
+                    shift = ord(temp.lower()) - 97  # Shift for lowercase letters
+                char = chr((ord(temp1) - 97 - shift) % 26 + 97)
+                result.append(char)
+
+            else:
+                result.append(temp1)
 
         return ''.join(result)
 
     def __str__(self):
-        return self.encrypt(self.cipher_text)
-    
+        return self.dencrypt(self.cipher_text)
 
 
 
